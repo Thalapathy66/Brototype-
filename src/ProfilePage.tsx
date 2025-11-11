@@ -178,8 +178,17 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
 
     // Validate phone format (must include country code)
     if (!formData.phone.startsWith("+")) {
-      alert("Phone number must include country code\n\nExamples:\n+15555550100 (test number)\n+911234567890 (real number)");
+      alert("Phone number must include country code\n\nFormat: +91 followed by 10 digits\nExample: +919876543210");
       return;
+    }
+
+    // Validate Indian phone number format if starts with +91
+    if (formData.phone.startsWith("+91")) {
+      const phoneDigits = formData.phone.substring(3); // Remove +91
+      if (phoneDigits.length !== 10 || !/^\d+$/.test(phoneDigits)) {
+        alert("Invalid Indian phone number\n\nFormat: +91 followed by exactly 10 digits\nExample: +919876543210");
+        return;
+      }
     }
 
     try {
@@ -197,17 +206,17 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
       setVerificationId(verificationIdResult);
       setShowPhoneVerification(true);
       
-      // Check if it's a test number
-      if (formData.phone.startsWith("+1555555")) {
+      // Check if it's a test number (Firebase test numbers often start with specific patterns)
+      if (formData.phone.startsWith("+1555555") || formData.phone.startsWith("+919999999")) {
         alert(`📱 Test Phone Number Detected!\n\nThis is a Firebase test number.\nEnter the verification code you set in Firebase Console.\n\nNo real SMS will be sent.`);
       } else {
-        alert(`Verification code sent to ${formData.phone}!\n\nPlease enter the 6-digit code you received via SMS.`);
+        alert(`Verification code sent to ${formData.phone}!\n\nPlease enter the 6-digit code you received via SMS.\n\n(If this is a test number, enter the code you configured in Firebase Console)`);
       }
     } catch (error: any) {
       console.error("Error sending phone verification:", error);
       
       if (error.code === "auth/invalid-phone-number") {
-        alert("Invalid phone number format. Please use: +[country code][number]\nExample: +15555550100");
+        alert("Invalid phone number format\n\nFor India: +91 followed by 10 digits\nExample: +919876543210\n\nFor testing: Use test numbers configured in Firebase Console");
       } else if (error.code === "auth/too-many-requests") {
         alert("Too many requests. Please try again later.");
       } else if (error.code === "auth/quota-exceeded" || error.code === "auth/billing-not-enabled") {
@@ -400,7 +409,7 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
                 value={formData.phone || ""}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 className="flex-1 px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
-                placeholder="+1234567890 (include country code)"
+                placeholder="+919876543210 (India)"
               />
               {formData.phoneVerified ? (
                 <span className="flex items-center gap-1 px-3 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg text-sm">
@@ -418,7 +427,7 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
               )}
             </div>
             <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-              Must include country code (e.g., +1 for US, +91 for India)
+              Format: +91 followed by 10 digits (e.g., +919876543210)
             </p>
           </div>
 
