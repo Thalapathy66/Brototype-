@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import AuthSwitch from "../components/ui/demo";
 import Dashboard from "./Dashboard";
 import { ADMIN_CREDENTIALS, UserData } from "./types";
+import { auth } from "./firebase";
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  User as FirebaseUser
+} from "firebase/auth";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,13 +17,64 @@ function App() {
   const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
   const [currentUserEmail, setCurrentUserEmail] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        // User is signed in
+        setCurrentUserEmail(firebaseUser.email || "");
+        
+        // Check if this is the admin
+        if (firebaseUser.email === ADMIN_CREDENTIALS.email) {
+          const adminData: UserData = {
+            name: "Admin",
+            email: ADMIN_CREDENTIALS.email,
+            isAdmin: true,
+            emailVerified: true,
+            phoneVerified: true,
+          };
+          setUserData(adminData);
+          localStorage.setItem("userData", JSON.stringify(adminData));
+          setIsLoggedIn(true);
+          setLoading(false);
+          return;
+        }
+        
+        // Load regular user data from localStorage
+        const savedUserData = localStorage.getItem(`userData_${firebaseUser.email}`);
+        if (savedUserData) {
+          try {
+            const parsed = JSON.parse(savedUserData);
+            setUserData(parsed);
+            setIsLoggedIn(true);
+          } catch (error) {
+            console.error("Error loading user data:", error);
+            setShowNamePrompt(true);
+          }
+        } else {
+          // First time login - show name prompt
+          setShowNamePrompt(true);
+        }
+      } else {
+        // User is signed out
+        setUserData(null);
+        setIsLoggedIn(false);
+        setShowNamePrompt(false);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Handle authentication after form submission
   useEffect(() => {
-    const handleFormSubmit = (e: Event) => {
+    const handleFormSubmit = async (e: Event) => {
       const target = e.target as HTMLFormElement;
       // Only handle auth forms, not the name prompt form
-      if (target.tagName === "FORM" && !showNamePrompt && !isLoggedIn) {
+      if (target.tagName === "FORM" && !showNamePrompt && !isLoggedIn && !loading) {
         e.preventDefault();
         
         // Get form data
@@ -27,82 +86,55 @@ function App() {
         // Determine if this is sign-up or sign-in
         const isSignUp = !!username;
         
-        // Check if admin login
-        if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
-          // Admin login - clear any existing user data and set admin data
-          const adminData: UserData = {
-            name: "Admin",
-            email: ADMIN_CREDENTIALS.email,
-            isAdmin: true,
-            emailVerified: true,
-            phoneVerified: true,
-          };
-          setUserData(adminData);
-          setCurrentUserEmail(email);
-          localStorage.setItem("userData", JSON.stringify(adminData));
-          setTimeout(() => {
-            setIsLoggedIn(true);
-          }, 500);
-          return;
-        }
-        
-        // Get registered users from localStorage
-        const registeredUsersJSON = localStorage.getItem("registeredUsers");
-        const registeredUsers: Array<{email: string; password: string; name: string}> = 
-          registeredUsersJSON ? JSON.parse(registeredUsersJSON) : [];
-        
-        if (isSignUp) {
-          // SIGN UP - Register new user
-          const existingUser = registeredUsers.find(u => u.email === email);
-          if (existingUser) {
-            alert("This email is already registered. Please sign in instead.");
-            return;
-          }
-          
-          // Register the new user
-          registeredUsers.push({ email, password, name: username });
-          localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
-          
-          // Show name prompt for additional details
-          setCurrentUserEmail(email);
-          setUserName(username);
-          setTimeout(() => {
-            setShowNamePrompt(true);
-          }, 500);
-        } else {
-          // SIGN IN - Validate credentials
-          const user = registeredUsers.find(u => u.email === email && u.password === password);
-          
-          if (!user) {
-            alert("Invalid email or password. Please sign up if you don't have an account.");
-            return;
-          }
-          
-          // Check if user has profile data
-          const savedUserData = localStorage.getItem(`userData_${email}`);
-          setCurrentUserEmail(email);
-          
-          if (savedUserData) {
-            try {
-              const parsed = JSON.parse(savedUserData);
-              setUserData(parsed);
-              setTimeout(() => {
-                setIsLoggedIn(true);
-              }, 500);
-            } catch (error) {
-              console.error("Error loading user data:", error);
-              // Show name prompt if data is corrupted
-              setUserName(user.name);
-              setTimeout(() => {
-                setShowNamePrompt(true);
-              }, 500);
-            }
-          } else {
-            // First time login after signup - show name prompt
-            setUserName(user.name);
+        try {
+          if (isSignUp) {
+            // SIGN UP with Firebase
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("User created:", userCredential.user.email);
+            
+            // Store username for later use
+            setUserName(username);
+            setCurrentUserEmail(email);
+            
+            // Show name prompt for additional details
             setTimeout(() => {
               setShowNamePrompt(true);
             }, 500);
+          } else {
+            // SIGN IN with Firebase
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log("User signed in:", userCredential.user.email);
+            
+            // The onAuthStateChanged listener will handle the rest
+          }
+        } catch (error: any) {
+          console.error("Authentication error:", error);
+          
+          // Handle specific Firebase errors
+          switch (error.code) {
+            case "auth/email-already-in-use":
+              alert("This email is already registered. Please sign in instead.");
+              break;
+            case "auth/invalid-email":
+              alert("Invalid email address.");
+              break;
+            case "auth/weak-password":
+              alert("Password should be at least 6 characters.");
+              break;
+            case "auth/user-not-found":
+              alert("No account found with this email. Please sign up first.");
+              break;
+            case "auth/wrong-password":
+              alert("Incorrect password. Please try again.");
+              break;
+            case "auth/invalid-credential":
+              alert("Invalid email or password. Please check your credentials.");
+              break;
+            case "auth/too-many-requests":
+              alert("Too many failed login attempts. Please try again later.");
+              break;
+            default:
+              alert(`Authentication error: ${error.message}`);
           }
         }
       }
@@ -110,7 +142,7 @@ function App() {
 
     document.addEventListener("submit", handleFormSubmit);
     return () => document.removeEventListener("submit", handleFormSubmit);
-  }, [showNamePrompt, isLoggedIn]);
+  }, [showNamePrompt, isLoggedIn, loading]);
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,15 +167,23 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    // If logging out as admin, clear the admin data from localStorage
-    if (userData?.isAdmin) {
-      localStorage.removeItem("userData");
-      setUserData(null);
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+      
+      setIsLoggedIn(false);
+      // If logging out as admin, clear the admin data from localStorage
+      if (userData?.isAdmin) {
+        localStorage.removeItem("userData");
+        setUserData(null);
+      }
+      // For regular users, keep their data for next login
+      setUserName("");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      alert("Error signing out. Please try again.");
     }
-    // For regular users, keep their data for next login
-    setUserName("");
   };
 
   const handleUpdateProfile = (updatedData: UserData) => {
@@ -155,6 +195,43 @@ function App() {
       localStorage.setItem("userData", JSON.stringify(updatedData));
     }
   };
+
+  // Show loading spinner while Firebase initializes
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "20px",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <div
+            style={{
+              width: "50px",
+              height: "50px",
+              border: "5px solid rgba(255, 255, 255, 0.3)",
+              borderTop: "5px solid white",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+              margin: "0 auto 20px",
+            }}
+          />
+          <p style={{ fontSize: "18px", fontWeight: "500" }}>Loading...</p>
+        </div>
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   if (showNamePrompt) {
     return (
