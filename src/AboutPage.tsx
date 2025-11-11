@@ -35,12 +35,9 @@ export function AboutPage({ }: AboutPageProps) {
               >
                 <div className="flex flex-col items-center gap-3">
                   <img
-                    src="https://www.brototype.com/brototype-logo.svg"
+                    src="https://yt3.googleusercontent.com/KjbsQTeG_Pcwk8mf-M_oYe5VoZaxwvRv57CPTFGFazRTfuvabRvXpDIxcTCKE721yOV-7m0Q=s900-c-k-c0x00ffffff-no-rj"
                     alt="Brototype Logo"
-                    className="h-16 w-auto"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://www.brototype.com/icons/icon-512x512.png";
-                    }}
+                    className="h-16 w-16 object-contain rounded-lg"
                   />
                   <div>
                     <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -355,7 +352,7 @@ function BrototypeSectionContent() {
       {/* Footer Note */}
       <div className="text-center text-neutral-600 dark:text-neutral-400 py-4">
         <p className="text-xs">
-          Packapeer Academy Pvt Ltd. © {new Date().getFullYear()}
+          Packapeer Academy Pvt Ltd. © 2025
         </p>
       </div>
     </>
@@ -569,7 +566,7 @@ function BrototalkSectionContent() {
           This complaint management system helps Brototype students and staff report and track issues effectively.
         </p>
         <p className="text-xs mt-2">
-          Powered by Brototype © {new Date().getFullYear()}
+          Powered by Brototype © 2025
         </p>
       </div>
     </>
