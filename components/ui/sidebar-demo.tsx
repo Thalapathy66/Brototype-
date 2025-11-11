@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { LayoutDashboard, UserCog, LogOut, MessageSquareWarning, Users } from "lucide-react";
+import { LayoutDashboard, UserCog, LogOut, MessageSquareWarning, Users, Info } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ProfilePage } from "@/src/ProfilePage";
 import { ComplaintsPage } from "@/src/ComplaintsPage";
 import { UsersPage } from "@/src/UsersPage";
+import { AboutPage } from "@/src/AboutPage";
 import { UserData } from "@/src/types";
 
 interface SidebarDemoProps {
@@ -17,9 +18,9 @@ interface SidebarDemoProps {
 
 export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemoProps) {
   const [open, setOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"dashboard" | "profile" | "complaints" | "users">("complaints");
+  const [currentPage, setCurrentPage] = useState<"dashboard" | "profile" | "complaints" | "users" | "about">("complaints");
 
-  const handleNavigation = (page: "dashboard" | "profile" | "complaints" | "users" | "logout") => {
+  const handleNavigation = (page: "dashboard" | "profile" | "complaints" | "users" | "about" | "logout") => {
     if (page === "logout") {
       onLogout();
     } else {
@@ -44,6 +45,14 @@ export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemo
         <LayoutDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
       onClick: () => handleNavigation("dashboard"),
+    },
+    {
+      label: "About",
+      href: "#",
+      icon: (
+        <Info className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+      onClick: () => handleNavigation("about"),
     },
   ];
 
@@ -124,6 +133,8 @@ export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemo
         <ComplaintsPage userData={userData} />
       ) : currentPage === "users" ? (
         <UsersPage userData={userData} />
+      ) : currentPage === "about" ? (
+        <AboutPage userData={userData} />
       ) : (
         <DashboardContent />
       )}
