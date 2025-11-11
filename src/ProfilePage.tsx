@@ -4,7 +4,11 @@ import { Mail, Phone, Check, AlertCircle } from "lucide-react";
 import { auth } from "./firebase";
 import { 
   sendEmailVerification, 
-  reload
+  reload,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  updatePhoneNumber,
+  PhoneAuthCredential
 } from "firebase/auth";
 
 interface ProfileProps {
@@ -20,6 +24,7 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
   const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
   const [showPhoneVerification, setShowPhoneVerification] = useState(false);
   const [verificationId, setVerificationId] = useState<string | null>(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
     setFormData(userData);
@@ -142,48 +147,121 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
     }
   };
 
-  // Phone Verification - Demo Mode (No SMS charges)
-  // Note: Real Firebase Phone Auth requires Blaze plan ($0.01-0.06 per SMS after 10k free/month)
-  const sendPhoneVerification = () => {
+  // Initialize reCAPTCHA on component mount
+  useEffect(() => {
+    if (!recaptchaVerifier && typeof window !== 'undefined') {
+      try {
+        const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+          size: 'invisible',
+          callback: () => {
+            // reCAPTCHA solved
+          }
+        });
+        setRecaptchaVerifier(verifier);
+      } catch (error) {
+        console.error("Error initializing reCAPTCHA:", error);
+      }
+    }
+  }, [recaptchaVerifier]);
+
+  // Phone Verification with Firebase (works with test phone numbers on free plan!)
+  const sendPhoneVerification = async () => {
     if (!formData.phone || formData.phone.trim() === "") {
       alert("Please enter a phone number first");
       return;
     }
 
-    // Generate random 6-digit code for demo
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setVerificationId(code); // Store code in verificationId for demo purposes
-    setShowPhoneVerification(true);
-    
-    alert(
-      `📱 DEMO MODE - Verification Code\n\n` +
-      `Code: ${code}\n\n` +
-      `In production with Firebase Blaze plan, this would be sent via SMS to ${formData.phone}\n\n` +
-      `For real SMS verification:\n` +
-      `1. Upgrade to Firebase Blaze plan (free for first 10k SMS/month)\n` +
-      `2. Enable Phone Auth in Firebase Console\n` +
-      `3. See PHONE_AUTH_GUIDE.md for details`
-    );
-    
-    console.log("Demo verification code:", code);
+    if (!auth.currentUser) {
+      alert("You must be logged in to verify your phone number");
+      return;
+    }
+
+    // Validate phone format (must include country code)
+    if (!formData.phone.startsWith("+")) {
+      alert("Phone number must include country code\n\nExamples:\n+15555550100 (test number)\n+911234567890 (real number)");
+      return;
+    }
+
+    try {
+      if (!recaptchaVerifier) {
+        alert("reCAPTCHA not initialized. Please refresh the page.");
+        return;
+      }
+
+      const phoneProvider = new PhoneAuthProvider(auth);
+      const verificationIdResult = await phoneProvider.verifyPhoneNumber(
+        formData.phone,
+        recaptchaVerifier
+      );
+      
+      setVerificationId(verificationIdResult);
+      setShowPhoneVerification(true);
+      
+      // Check if it's a test number
+      if (formData.phone.startsWith("+1555555")) {
+        alert(`📱 Test Phone Number Detected!\n\nThis is a Firebase test number.\nEnter the verification code you set in Firebase Console.\n\nNo real SMS will be sent.`);
+      } else {
+        alert(`Verification code sent to ${formData.phone}!\n\nPlease enter the 6-digit code you received via SMS.`);
+      }
+    } catch (error: any) {
+      console.error("Error sending phone verification:", error);
+      
+      if (error.code === "auth/invalid-phone-number") {
+        alert("Invalid phone number format. Please use: +[country code][number]\nExample: +15555550100");
+      } else if (error.code === "auth/too-many-requests") {
+        alert("Too many requests. Please try again later.");
+      } else if (error.code === "auth/quota-exceeded" || error.code === "auth/billing-not-enabled") {
+        alert(
+          "Phone Auth not enabled or quota exceeded.\n\n" +
+          "To use Firebase Phone Auth:\n" +
+          "1. Enable Phone provider in Firebase Console\n" +
+          "2. Add test phone numbers for free testing\n" +
+          "   OR\n" +
+          "3. Upgrade to Blaze plan for real SMS"
+        );
+      } else {
+        alert(`Error: ${error.message}\n\nMake sure:\n1. Phone provider is enabled in Firebase Console\n2. Test phone numbers are configured`);
+      }
+      
+      // Reset reCAPTCHA on error
+      if (recaptchaVerifier) {
+        recaptchaVerifier.clear();
+        setRecaptchaVerifier(null);
+      }
+    }
   };
 
-  const verifyPhone = () => {
+  const verifyPhone = async () => {
     if (!verificationId || !phoneVerificationCode) {
       alert("Please enter the verification code");
       return;
     }
 
-    // Verify the demo code
-    if (phoneVerificationCode === verificationId) {
+    if (!auth.currentUser) {
+      alert("You must be logged in to verify your phone number");
+      return;
+    }
+
+    try {
+      const credential = PhoneAuthProvider.credential(verificationId, phoneVerificationCode) as PhoneAuthCredential;
+      await updatePhoneNumber(auth.currentUser, credential);
+      
       setFormData((prev) => ({ ...prev, phoneVerified: true }));
       onUpdateProfile({ ...formData, phoneVerified: true });
       setShowPhoneVerification(false);
       setPhoneVerificationCode("");
       setVerificationId(null);
       alert("Phone verified successfully! ✓");
-    } else {
-      alert("Invalid verification code. Please try again.");
+    } catch (error: any) {
+      console.error("Error verifying phone:", error);
+      if (error.code === "auth/invalid-verification-code") {
+        alert("Invalid verification code. Please try again.");
+      } else if (error.code === "auth/code-expired") {
+        alert("Verification code expired. Please request a new code.");
+        setShowPhoneVerification(false);
+      } else {
+        alert(`Error verifying phone: ${error.message}`);
+      }
     }
   };
 
@@ -404,6 +482,9 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
             {isSaving ? "Saving..." : "Save Changes"}
           </button>
         </form>
+
+        {/* Hidden reCAPTCHA container for phone verification */}
+        <div id="recaptcha-container"></div>
       </div>
     </div>
   );
