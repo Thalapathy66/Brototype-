@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { UserData } from "./types";
 import { Mail, Phone, Check, AlertCircle } from "lucide-react";
+import { auth } from "./firebase";
+import { sendEmailVerification, reload } from "firebase/auth";
 
 interface ProfileProps {
   userData: UserData;
@@ -12,11 +14,8 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
   const [formData, setFormData] = useState<UserData>(userData);
   const [isSaving, setIsSaving] = useState(false);
   const [usernameError, setUsernameError] = useState("");
-  const [emailVerificationCode, setEmailVerificationCode] = useState("");
   const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
-  const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [showPhoneVerification, setShowPhoneVerification] = useState(false);
-  const [generatedEmailCode, setGeneratedEmailCode] = useState("");
   const [generatedPhoneCode, setGeneratedPhoneCode] = useState("");
 
   useEffect(() => {
@@ -93,25 +92,50 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Email Verification
-  const sendEmailVerification = () => {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedEmailCode(code);
-    setShowEmailVerification(true);
-    // In a real app, send this code to the email
-    console.log("Email verification code:", code);
-    alert(`Verification code sent to ${formData.email}!\n\n(For demo: Code is ${code})\n\nIn production, this would be sent via email service.`);
+  // Email Verification with Firebase
+  const sendEmailVerificationCode = async () => {
+    if (!auth.currentUser) {
+      alert("You must be logged in to verify your email");
+      return;
+    }
+
+    if (auth.currentUser.emailVerified) {
+      alert("Your email is already verified!");
+      return;
+    }
+
+    try {
+      await sendEmailVerification(auth.currentUser);
+      alert(`Verification email sent to ${formData.email}!\n\nPlease check your inbox and spam folder.\n\nClick the link in the email to verify your account.`);
+    } catch (error: any) {
+      console.error("Error sending verification email:", error);
+      if (error.code === "auth/too-many-requests") {
+        alert("Too many requests. Please wait a few minutes before trying again.");
+      } else {
+        alert(`Error sending verification email: ${error.message}`);
+      }
+    }
   };
 
-  const verifyEmail = () => {
-    if (emailVerificationCode === generatedEmailCode) {
-      setFormData((prev) => ({ ...prev, emailVerified: true }));
-      onUpdateProfile({ ...formData, emailVerified: true });
-      setShowEmailVerification(false);
-      setEmailVerificationCode("");
-      alert("Email verified successfully!");
-    } else {
-      alert("Invalid verification code");
+  const checkEmailVerificationStatus = async () => {
+    if (!auth.currentUser) {
+      return;
+    }
+
+    try {
+      // Reload the user to get the latest emailVerified status
+      await reload(auth.currentUser);
+      
+      if (auth.currentUser.emailVerified) {
+        setFormData((prev) => ({ ...prev, emailVerified: true }));
+        onUpdateProfile({ ...formData, emailVerified: true });
+        alert("Email verified successfully! ✓");
+      } else {
+        alert("Email not verified yet.\n\nPlease check your email and click the verification link, then click 'Check Status' again.");
+      }
+    } catch (error: any) {
+      console.error("Error checking verification status:", error);
+      alert(`Error checking status: ${error.message}`);
     }
   };
 
@@ -201,46 +225,41 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
                   <Check className="w-4 h-4" /> Verified
                 </span>
               ) : (
-                <button
-                  type="button"
-                  onClick={sendEmailVerification}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
-                >
-                  Verify
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={sendEmailVerificationCode}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
+                  >
+                    Send Verification Email
+                  </button>
+                  <button
+                    type="button"
+                    onClick={checkEmailVerificationStatus}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm"
+                  >
+                    Check Status
+                  </button>
+                </div>
               )}
             </div>
           </div>
 
-          {/* Email Verification Modal */}
-          {showEmailVerification && !formData.emailVerified && (
+          {/* Email Verification Info */}
+          {!formData.emailVerified && (
             <div className="p-4 border-2 border-blue-500 rounded-lg bg-blue-50 dark:bg-blue-900/20">
               <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                 <div className="flex-1">
                   <h4 className="font-medium text-neutral-900 dark:text-neutral-100 mb-2">
-                    Verify Your Email
+                    Email Verification Required
                   </h4>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
-                    Enter the 6-digit code sent to {formData.email}
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-2">
+                    Click "Send Verification Email" to receive a verification link at {formData.email}
                   </p>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={emailVerificationCode}
-                      onChange={(e) => setEmailVerificationCode(e.target.value)}
-                      placeholder="Enter code"
-                      maxLength={6}
-                      className="flex-1 px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800"
-                    />
-                    <button
-                      type="button"
-                      onClick={verifyEmail}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                    >
-                      Verify
-                    </button>
-                  </div>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    After clicking the link in your email, click "Check Status" to update your verification status.
+                  </p>
                 </div>
               </div>
             </div>
