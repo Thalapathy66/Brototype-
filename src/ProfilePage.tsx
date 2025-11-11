@@ -25,10 +25,15 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
 
   // Check username availability
   const checkUsernameAvailability = (username: string) => {
-    if (!username || username.trim() === "") {
+    if (!username || username.trim() === "" || username === "@") {
       setUsernameError("");
       return;
     }
+
+    // Normalize username for comparison (lowercase, ensure @ prefix)
+    const normalizedUsername = username.toLowerCase().startsWith("@") 
+      ? username.toLowerCase() 
+      : `@${username.toLowerCase()}`;
 
     // Get all user data from localStorage
     const allKeys = Object.keys(localStorage);
@@ -39,7 +44,12 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
       if (storedData) {
         try {
           const parsedData = JSON.parse(storedData);
-          if (parsedData.username === username && parsedData.email !== userData.email) {
+          const storedUsername = parsedData.username?.toLowerCase() || "";
+          const normalizedStored = storedUsername.startsWith("@") 
+            ? storedUsername 
+            : storedUsername ? `@${storedUsername}` : "";
+            
+          if (normalizedStored === normalizedUsername && parsedData.email !== userData.email) {
             setUsernameError("This username is already taken");
             return;
           }
@@ -53,8 +63,14 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
   };
 
   const handleUsernameChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, username: value }));
-    checkUsernameAvailability(value);
+    // Remove any existing @ symbols and spaces
+    let cleanValue = value.replace(/[@\s]/g, "").toLowerCase();
+    
+    // Add @ prefix if not empty
+    const formattedValue = cleanValue ? `@${cleanValue}` : "";
+    
+    setFormData((prev) => ({ ...prev, username: formattedValue }));
+    checkUsernameAvailability(formattedValue);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -242,8 +258,11 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
               className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none ${
                 usernameError ? "border-red-500" : "border-neutral-300 dark:border-neutral-600"
               }`}
-              placeholder="@username"
+              placeholder="Enter username (e.g., tacenta)"
             />
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+              Will be formatted as @username automatically
+            </p>
             {usernameError && (
               <div className="flex items-center gap-1 mt-1 text-red-600 dark:text-red-400 text-sm">
                 <AlertCircle className="w-4 h-4" />
