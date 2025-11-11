@@ -113,7 +113,7 @@ function BrototypeSectionContent() {
   return (
     <>
       {/* Mission Section */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
           <div className="flex items-center gap-3 mb-4">
@@ -130,7 +130,7 @@ function BrototypeSectionContent() {
 
       {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="relative p-0.5 rounded-[1.25rem]">
+        <div className="relative p-px rounded-[1.25rem]">
           <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
           <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800 text-center">
             <Users className="w-10 h-10 text-green-600 dark:text-green-400 mx-auto mb-3" />
@@ -140,7 +140,7 @@ function BrototypeSectionContent() {
           </div>
         </div>
 
-        <div className="relative p-0.5 rounded-[1.25rem]">
+        <div className="relative p-px rounded-[1.25rem]">
           <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
           <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800 text-center">
             <Award className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
@@ -150,7 +150,7 @@ function BrototypeSectionContent() {
           </div>
         </div>
 
-        <div className="relative p-0.5 rounded-[1.25rem]">
+        <div className="relative p-px rounded-[1.25rem]">
           <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
           <div className="relative bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800 text-center">
             <Heart className="w-10 h-10 text-orange-600 dark:text-orange-400 mx-auto mb-3" />
@@ -162,7 +162,7 @@ function BrototypeSectionContent() {
       </div>
 
       {/* About Brocamp */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
@@ -210,7 +210,7 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Certifications */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-8 rounded-2xl border border-yellow-200 dark:border-yellow-800">
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4 text-center">
@@ -311,7 +311,7 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Contact Information */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
@@ -363,7 +363,7 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Founder Section */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
           <div className="flex flex-col md:flex-row items-center gap-6">
@@ -409,7 +409,7 @@ function BrototalkSectionContent() {
   return (
     <>
       {/* About Brototalk */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-3 mb-4">
@@ -501,7 +501,7 @@ function BrototalkSectionContent() {
       </div>
 
       {/* Complaint Categories */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
@@ -559,7 +559,7 @@ function BrototalkSectionContent() {
       </div>
 
       {/* How It Works */}
-      <div className="relative p-0.5 rounded-[1.5rem]">
+      <div className="relative p-px rounded-[1.5rem]">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
         <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
