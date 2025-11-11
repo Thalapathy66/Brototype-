@@ -113,55 +113,70 @@ function BrototypeSectionContent() {
   return (
     <>
       {/* Mission Section */}
-      <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
-        <div className="flex items-center gap-3 mb-4">
-          <Target className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">Our Mission</h2>
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
+          <div className="flex items-center gap-3 mb-4">
+            <Target className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">Our Mission</h2>
+          </div>
+          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg">
+            To help motivated individuals from any background build a high-paying career in software engineering. 
+            We believe that if you know how to read and write in English and have basic math knowledge, 
+            you too can become a software engineer.
+          </p>
         </div>
-        <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg">
-          To help motivated individuals from any background build a high-paying career in software engineering. 
-          We believe that if you know how to read and write in English and have basic math knowledge, 
-          you too can become a software engineer.
-        </p>
       </div>
 
       {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800 text-center">
-          <Users className="w-10 h-10 text-green-600 dark:text-green-400 mx-auto mb-3" />
-          <div className="text-4xl font-bold text-green-900 dark:text-green-100 mb-2">2200+</div>
-          <p className="text-green-700 dark:text-green-300 font-medium">Students Placed</p>
-          <p className="text-sm text-green-600 dark:text-green-400 mt-1">In the last 6 years</p>
+        <div className="relative p-2 rounded-[1.25rem]">
+          <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+          <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800 text-center">
+            <Users className="w-10 h-10 text-green-600 dark:text-green-400 mx-auto mb-3" />
+            <div className="text-4xl font-bold text-green-900 dark:text-green-100 mb-2">2200+</div>
+            <p className="text-green-700 dark:text-green-300 font-medium">Students Placed</p>
+            <p className="text-sm text-green-600 dark:text-green-400 mt-1">In the last 6 years</p>
+          </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800 text-center">
-          <Award className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-          <div className="text-4xl font-bold text-blue-900 dark:text-blue-100 mb-2">₹39,000</div>
-          <p className="text-blue-700 dark:text-blue-300 font-medium">Average Salary</p>
-          <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">Per month</p>
+        <div className="relative p-2 rounded-[1.25rem]">
+          <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+          <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800 text-center">
+            <Award className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
+            <div className="text-4xl font-bold text-blue-900 dark:text-blue-100 mb-2">₹39,000</div>
+            <p className="text-blue-700 dark:text-blue-300 font-medium">Average Salary</p>
+            <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">Per month</p>
+          </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800 text-center">
-          <Heart className="w-10 h-10 text-orange-600 dark:text-orange-400 mx-auto mb-3" />
-          <div className="text-4xl font-bold text-orange-900 dark:text-orange-100 mb-2">71%</div>
-          <p className="text-orange-700 dark:text-orange-300 font-medium">Non-IT Background</p>
-          <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">Successfully placed</p>
+        <div className="relative p-2 rounded-[1.25rem]">
+          <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+          <div className="relative bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800 text-center">
+            <Heart className="w-10 h-10 text-orange-600 dark:text-orange-400 mx-auto mb-3" />
+            <div className="text-4xl font-bold text-orange-900 dark:text-orange-100 mb-2">71%</div>
+            <p className="text-orange-700 dark:text-orange-300 font-medium">Non-IT Background</p>
+            <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">Successfully placed</p>
+          </div>
         </div>
       </div>
 
       {/* About Brocamp */}
-      <div className="bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
-        <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
-          About Brocamp
-        </h2>
-        <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed mb-4">
-          Brocamp is a 12-month intensive training program, offered both in-house and online, 
-          for motivated individuals who are ready to work hard and build a high-paying career in software engineering.
-        </p>
-        <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
-          Our study materials worth more than ₹5 Lakhs are 100% FREE of cost, and we provide 
-          24x7 doubt clearance support with our Exclusive Membership program.
-        </p>
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
+            About Brocamp
+          </h2>
+          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed mb-4">
+            Brocamp is a 12-month intensive training program, offered both in-house and online, 
+            for motivated individuals who are ready to work hard and build a high-paying career in software engineering.
+          </p>
+          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
+            Our study materials worth more than ₹5 Lakhs are 100% FREE of cost, and we provide 
+            24x7 doubt clearance support with our Exclusive Membership program.
+          </p>
+        </div>
       </div>
 
       {/* Courses Offered */}
@@ -195,41 +210,44 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Certifications */}
-      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-8 rounded-2xl border border-yellow-200 dark:border-yellow-800">
-        <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4 text-center">
-          Official Partnerships
-        </h2>
-        <p className="text-center text-neutral-700 dark:text-neutral-300 mb-6">
-          Brototype (Packapeer Academy Private Limited) is officially partnered with:
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
-            <img
-              src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/NCVET_r1wu73.png"
-              alt="NCVET - Government of India"
-              className="max-h-16 object-contain"
-            />
-          </div>
-          <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
-            <img
-              src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/Skill_India_uyisbf.png"
-              alt="Skill India"
-              className="max-h-16 object-contain"
-            />
-          </div>
-          <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
-            <img
-              src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/nasscom_logo_k53qrh.jpg"
-              alt="NASSCOM"
-              className="max-h-16 object-contain"
-            />
-          </div>
-          <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
-            <img
-              src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/IT_-_ITeS_SSC_cxeouf.png"
-              alt="IT-ITeS SSC"
-              className="max-h-16 object-contain"
-            />
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-8 rounded-2xl border border-yellow-200 dark:border-yellow-800">
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4 text-center">
+            Official Partnerships
+          </h2>
+          <p className="text-center text-neutral-700 dark:text-neutral-300 mb-6">
+            Brototype (Packapeer Academy Private Limited) is officially partnered with:
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
+              <img
+                src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/NCVET_r1wu73.png"
+                alt="NCVET - Government of India"
+                className="max-h-16 object-contain"
+              />
+            </div>
+            <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
+              <img
+                src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/Skill_India_uyisbf.png"
+                alt="Skill India"
+                className="max-h-16 object-contain"
+              />
+            </div>
+            <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
+              <img
+                src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/nasscom_logo_k53qrh.jpg"
+                alt="NASSCOM"
+                className="max-h-16 object-contain"
+              />
+            </div>
+            <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
+              <img
+                src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/IT_-_ITeS_SSC_cxeouf.png"
+                alt="IT-ITeS SSC"
+                className="max-h-16 object-contain"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -293,48 +311,51 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Contact Information */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
-        <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
-          Contact Information
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Admissions</p>
-                <a href="mailto:admissions@brototype.com" className="text-blue-600 dark:text-blue-400 hover:underline break-all">
-                  admissions@brototype.com
-                </a>
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
+            Contact Information
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Admissions</p>
+                  <a href="mailto:admissions@brototype.com" className="text-blue-600 dark:text-blue-400 hover:underline break-all">
+                    admissions@brototype.com
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Official Queries</p>
+                  <a href="mailto:talk@brototype.com" className="text-blue-600 dark:text-blue-400 hover:underline break-all">
+                    talk@brototype.com
+                  </a>
+                </div>
               </div>
             </div>
-            <div className="flex items-start gap-4">
-              <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Official Queries</p>
-                <a href="mailto:talk@brototype.com" className="text-blue-600 dark:text-blue-400 hover:underline break-all">
-                  talk@brototype.com
-                </a>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Feedback & Complaints</p>
+                  <a href="mailto:feedback@brototype.com" className="text-blue-600 dark:text-blue-400 hover:underline break-all">
+                    feedback@brototype.com
+                  </a>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Feedback & Complaints</p>
-                <a href="mailto:feedback@brototype.com" className="text-blue-600 dark:text-blue-400 hover:underline break-all">
-                  feedback@brototype.com
-                </a>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Contact Number</p>
-                <a href="tel:+917034395811" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  +91 7034 395 811
-                </a>
+              <div className="flex items-start gap-4">
+                <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Contact Number</p>
+                  <a href="tel:+917034395811" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    +91 7034 395 811
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -342,30 +363,33 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Founder Section */}
-      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
-        <div className="flex flex-col md:flex-row items-center gap-6">
-          <img
-            src="https://www.brototype.com/images/nikhil.webp"
-            alt="Nikhil Kilivayil"
-            className="w-32 h-32 rounded-full object-cover border-4 border-purple-300 dark:border-purple-600"
-          />
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-2">
-              Nikhil Kilivayil
-            </h3>
-            <p className="text-purple-600 dark:text-purple-400 font-semibold mb-3">
-              Founder & CEO, Brototype
-            </p>
-            <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3">
-              "Hi all, if you think there is something that I should know whether it is a concern, 
-              query, feedback or whatever please write me directly at{" "}
-              <a href="mailto:ceo@brototype.com" className="text-purple-600 dark:text-purple-400 hover:underline">
-                ceo@brototype.com
-              </a>
-            </p>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              I will be personally checking this email and try my best to reply to all the emails as my time permits.
-            </p>
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <img
+              src="https://www.brototype.com/images/nikhil.webp"
+              alt="Nikhil Kilivayil"
+              className="w-32 h-32 rounded-full object-cover border-4 border-purple-300 dark:border-purple-600"
+            />
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-2">
+                Nikhil Kilivayil
+              </h3>
+              <p className="text-purple-600 dark:text-purple-400 font-semibold mb-3">
+                Founder & CEO, Brototype
+              </p>
+              <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3">
+                "Hi all, if you think there is something that I should know whether it is a concern, 
+                query, feedback or whatever please write me directly at{" "}
+                <a href="mailto:ceo@brototype.com" className="text-purple-600 dark:text-purple-400 hover:underline">
+                  ceo@brototype.com
+                </a>
+              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                I will be personally checking this email and try my best to reply to all the emails as my time permits.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -385,20 +409,23 @@ function BrototalkSectionContent() {
   return (
     <>
       {/* About Brototalk */}
-      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
-        <div className="flex items-center gap-3 mb-4">
-          <MessageSquareWarning className="w-10 h-10 text-blue-600 dark:text-blue-400" />
-          <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">What is Brototalk?</h2>
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center gap-3 mb-4">
+            <MessageSquareWarning className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+            <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">What is Brototalk?</h2>
+          </div>
+          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg mb-4">
+            Brototalk is Brototype's official complaint management system designed to help students and staff 
+            report, track, and resolve issues efficiently. We believe in transparency and accountability in 
+            addressing concerns to maintain a healthy learning environment.
+          </p>
+          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg">
+            This platform ensures that every voice is heard and every complaint is properly documented and 
+            addressed by the appropriate authorities.
+          </p>
         </div>
-        <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg mb-4">
-          Brototalk is Brototype's official complaint management system designed to help students and staff 
-          report, track, and resolve issues efficiently. We believe in transparency and accountability in 
-          addressing concerns to maintain a healthy learning environment.
-        </p>
-        <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg">
-          This platform ensures that every voice is heard and every complaint is properly documented and 
-          addressed by the appropriate authorities.
-        </p>
       </div>
 
       {/* Features */}
@@ -474,30 +501,33 @@ function BrototalkSectionContent() {
       </div>
 
       {/* Complaint Categories */}
-      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
-        <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
-          Complaint Categories
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            "Technical Issues",
-            "Course Content",
-            "Infrastructure",
-            "Faculty Related",
-            "Administrative",
-            "Harassment",
-            "Payment Issues",
-            "Other"
-          ].map((category, index) => (
-            <div
-              key={index}
-              className="bg-white dark:bg-neutral-800 p-4 rounded-lg border border-purple-200 dark:border-purple-700 text-center hover:shadow-md transition"
-            >
-              <p className="text-neutral-800 dark:text-neutral-200 font-medium text-sm">
-                {category}
-              </p>
-            </div>
-          ))}
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
+            Complaint Categories
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              "Technical Issues",
+              "Course Content",
+              "Infrastructure",
+              "Faculty Related",
+              "Administrative",
+              "Harassment",
+              "Payment Issues",
+              "Other"
+            ].map((category, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-neutral-800 p-4 rounded-lg border border-purple-200 dark:border-purple-700 text-center hover:shadow-md transition"
+              >
+                <p className="text-neutral-800 dark:text-neutral-200 font-medium text-sm">
+                  {category}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -529,53 +559,56 @@ function BrototalkSectionContent() {
       </div>
 
       {/* How It Works */}
-      <div className="bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
-        <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
-          How It Works
-        </h2>
-        <div className="space-y-4">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
-              1
+      <div className="relative p-2 rounded-[1.5rem]">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+        <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
+            How It Works
+          </h2>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+                1
+              </div>
+              <div>
+                <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Create an Account</h3>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  Sign up with your email and verify your account to get started.
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Create an Account</h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Sign up with your email and verify your account to get started.
-              </p>
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+                2
+              </div>
+              <div>
+                <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Submit a Complaint</h3>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  Fill out the complaint form with all necessary details including category and priority.
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
-              2
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+                3
+              </div>
+              <div>
+                <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Track Progress</h3>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  Monitor your complaint status and receive updates from the admin team.
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Submit a Complaint</h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Fill out the complaint form with all necessary details including category and priority.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
-              3
-            </div>
-            <div>
-              <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Track Progress</h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Monitor your complaint status and receive updates from the admin team.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
-              4
-            </div>
-            <div>
-              <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Resolution</h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
-                Get notified when your complaint is resolved with admin comments.
-              </p>
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+                4
+              </div>
+              <div>
+                <h3 className="font-bold text-neutral-800 dark:text-neutral-200 mb-1">Resolution</h3>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  Get notified when your complaint is resolved with admin comments.
+                </p>
+              </div>
             </div>
           </div>
         </div>
