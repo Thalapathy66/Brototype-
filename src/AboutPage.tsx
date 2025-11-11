@@ -35,7 +35,7 @@ export function AboutPage({ }: AboutPageProps) {
               >
                 <div className="flex flex-col items-center gap-3">
                   <img
-                    src="https://yt3.googleusercontent.com/KjbsQTeG_Pcwk8mf-M_oYe5VoZaxwvRv57CPTFGFazRTfuvabRvXpDIxcTCKE721yOV-7m0Q=s900-c-k-c0x00ffffff-no-rj"
+                    src="https://i.ibb.co/CKRKyKL1/images.png"
                     alt="Brototype Logo"
                     className="h-16 w-16 object-contain rounded-lg"
                   />
