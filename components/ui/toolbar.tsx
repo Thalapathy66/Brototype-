@@ -3,9 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils";
 import {
-    Settings,
     Download,
-    Share2,
     Sparkles,
     ChevronDown,
     Search,
@@ -16,6 +14,8 @@ interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
     onSearch?: (value: string) => void;
     onFilterClick?: () => void;
     onCreateClick?: () => void;
+    onDownloadClick?: () => void;
+    filterOpen?: boolean;
 }
 
 function Toolbar({
@@ -23,6 +23,8 @@ function Toolbar({
     onSearch,
     onFilterClick,
     onCreateClick,
+    onDownloadClick,
+    filterOpen = false,
     ...props
 }: ToolbarProps) {
     return (
@@ -55,45 +57,38 @@ function Toolbar({
             {/* Filter Button */}
             <button
                 onClick={onFilterClick}
-                className="h-9 px-3
-                    bg-zinc-100 dark:bg-zinc-800 
-                    rounded-lg flex items-center gap-2
-                    text-sm text-zinc-900 dark:text-zinc-100
-                    hover:bg-zinc-200 dark:hover:bg-zinc-700
-                    transition-colors"
+                className={cn(
+                    "h-9 px-3",
+                    "rounded-lg flex items-center gap-2",
+                    "text-sm text-zinc-900 dark:text-zinc-100",
+                    "transition-colors",
+                    filterOpen 
+                        ? "bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-700 dark:text-fuchsia-400"
+                        : "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                )}
             >
                 <Filter className="w-4 h-4" />
                 <span className="hidden sm:inline">Filters</span>
-                <ChevronDown className="w-4 h-4 text-zinc-500" />
+                <ChevronDown className={cn(
+                    "w-4 h-4 text-zinc-500 transition-transform",
+                    filterOpen && "rotate-180"
+                )} />
             </button>
 
-            {/* Action Buttons */}
-            <div className="hidden md:flex items-center gap-1">
-                <button
-                    className="h-9 w-9 flex items-center justify-center 
-                        rounded-lg
-                        hover:bg-zinc-100 dark:hover:bg-zinc-800 
-                        transition-colors"
-                >
-                    <Settings className="w-4 h-4 text-zinc-500" />
-                </button>
-                <button
-                    className="h-9 w-9 flex items-center justify-center 
-                        rounded-lg
-                        hover:bg-zinc-100 dark:hover:bg-zinc-800 
-                        transition-colors"
-                >
-                    <Download className="w-4 h-4 text-zinc-500" />
-                </button>
-                <button
-                    className="h-9 w-9 flex items-center justify-center 
-                        rounded-lg
-                        hover:bg-zinc-100 dark:hover:bg-zinc-800 
-                        transition-colors"
-                >
-                    <Share2 className="w-4 h-4 text-zinc-500" />
-                </button>
-            </div>
+            {/* Download All Button */}
+            <button
+                onClick={onDownloadClick}
+                title="Download all complaints as Word document"
+                className="h-9 px-3 flex items-center gap-2
+                    bg-green-100 dark:bg-green-900/30
+                    text-green-700 dark:text-green-400
+                    rounded-lg
+                    hover:bg-green-200 dark:hover:bg-green-900/50
+                    transition-colors"
+            >
+                <Download className="w-4 h-4" />
+                <span className="hidden sm:inline text-sm">Export</span>
+            </button>
 
             {/* Primary Action */}
             <button

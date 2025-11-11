@@ -3,7 +3,7 @@ import { Toolbar } from "@/components/ui/toolbar";
 import { CreateComplaintModal } from "./CreateComplaintModal";
 import { ComplaintDetailsModal } from "./ComplaintDetailsModal";
 import { Complaint, STATUS_CONFIG, UserData } from "./types";
-import { AlertCircle, CheckCircle, Clock, TrendingUp } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, TrendingUp, Download } from "lucide-react";
 
 interface ComplaintsPageProps {
   userData: UserData;
@@ -15,6 +15,12 @@ export function ComplaintsPage({ userData }: ComplaintsPageProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    status: "all" as "all" | Complaint["status"],
+    priority: "all" as "all" | Complaint["priority"],
+    sortBy: "date-desc" as "date-desc" | "date-asc" | "priority",
+  });
 
   // Debug: Log user data to verify admin status
   useEffect(() => {
@@ -45,20 +51,46 @@ export function ComplaintsPage({ userData }: ComplaintsPageProps) {
     }
   }, [complaints]);
 
-  // Filter complaints based on search
+  // Filter and sort complaints based on search and filters
   useEffect(() => {
+    let filtered = [...complaints];
+
+    // Apply search filter
     if (searchQuery.trim()) {
-      const filtered = complaints.filter(
+      filtered = filtered.filter(
         (c) =>
           c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           c.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          c.category.toLowerCase().includes(searchQuery.toLowerCase())
+          c.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.createdBy.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredComplaints(filtered);
-    } else {
-      setFilteredComplaints(complaints);
     }
-  }, [searchQuery, complaints]);
+
+    // Apply status filter
+    if (filters.status !== "all") {
+      filtered = filtered.filter((c) => c.status === filters.status);
+    }
+
+    // Apply priority filter
+    if (filters.priority !== "all") {
+      filtered = filtered.filter((c) => c.priority === filters.priority);
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      if (filters.sortBy === "date-desc") {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } else if (filters.sortBy === "date-asc") {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      } else if (filters.sortBy === "priority") {
+        const priorityOrder = { high: 3, medium: 2, low: 1 };
+        return priorityOrder[b.priority] - priorityOrder[a.priority];
+      }
+      return 0;
+    });
+
+    setFilteredComplaints(filtered);
+  }, [searchQuery, complaints, filters]);
 
   const handleCreateComplaint = (data: {
     title: string;
@@ -94,6 +126,92 @@ export function ComplaintsPage({ userData }: ComplaintsPageProps) {
           : c
       )
     );
+  };
+
+  // Download functionality
+  const downloadSingleComplaint = (complaint: Complaint) => {
+    const content = `
+COMPLAINT REPORT
+================
+
+Title: ${complaint.title}
+ID: ${complaint.id}
+Status: ${complaint.status.toUpperCase()}
+Priority: ${complaint.priority.toUpperCase()}
+Category: ${complaint.category}
+
+Reported By: ${complaint.createdBy}
+Date: ${new Date(complaint.createdAt).toLocaleString()}
+Last Updated: ${new Date(complaint.updatedAt).toLocaleString()}
+
+DESCRIPTION
+-----------
+${complaint.description}
+
+${complaint.resolution ? `RESOLUTION\n----------\n${complaint.resolution}` : ''}
+
+---
+Generated from Brototalk Complaint Management System
+    `.trim();
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `complaint-${complaint.id}-${complaint.title.replace(/\s+/g, "-")}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadAllComplaints = () => {
+    if (filteredComplaints.length === 0) {
+      alert("No complaints to download");
+      return;
+    }
+
+    const content = `
+BROTOTYPE COMPLAINTS REPORT
+============================
+Generated: ${new Date().toLocaleString()}
+Total Complaints: ${filteredComplaints.length}
+
+${filteredComplaints.map((c, index) => `
+COMPLAINT #${index + 1}
+${"=".repeat(50)}
+
+Title: ${c.title}
+ID: ${c.id}
+Status: ${c.status.toUpperCase()}
+Priority: ${c.priority.toUpperCase()}
+Category: ${c.category}
+
+Reported By: ${c.createdBy}
+Date: ${new Date(c.createdAt).toLocaleString()}
+Last Updated: ${new Date(c.updatedAt).toLocaleString()}
+
+DESCRIPTION:
+${c.description}
+
+${c.resolution ? `RESOLUTION:\n${c.resolution}` : 'STATUS: Not yet resolved'}
+
+`).join("\n" + "=".repeat(50) + "\n")}
+
+END OF REPORT
+---
+Generated from Brototalk Complaint Management System
+    `.trim();
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `brototype-complaints-report-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Statistics
@@ -174,7 +292,82 @@ export function ComplaintsPage({ userData }: ComplaintsPageProps) {
         <Toolbar
           onSearch={setSearchQuery}
           onCreateClick={() => setIsCreateModalOpen(true)}
+          onFilterClick={() => setFilterOpen(!filterOpen)}
+          onDownloadClick={downloadAllComplaints}
+          filterOpen={filterOpen}
         />
+
+        {/* Filter Panel */}
+        {filterOpen && (
+          <div className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Status Filter */}
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  Status
+                </label>
+                <select
+                  value={filters.status}
+                  onChange={(e) => setFilters({ ...filters, status: e.target.value as any })}
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-fuchsia-500 outline-none"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="resolved">Resolved</option>
+                </select>
+              </div>
+
+              {/* Priority Filter */}
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  Priority
+                </label>
+                <select
+                  value={filters.priority}
+                  onChange={(e) => setFilters({ ...filters, priority: e.target.value as any })}
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-fuchsia-500 outline-none"
+                >
+                  <option value="all">All Priorities</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+
+              {/* Sort By */}
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  Sort By
+                </label>
+                <select
+                  value={filters.sortBy}
+                  onChange={(e) => setFilters({ ...filters, sortBy: e.target.value as any })}
+                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-fuchsia-500 outline-none"
+                >
+                  <option value="date-desc">Newest First</option>
+                  <option value="date-asc">Oldest First</option>
+                  <option value="priority">Priority (High to Low)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Active Filters Count */}
+            {(filters.status !== "all" || filters.priority !== "all" || filters.sortBy !== "date-desc") && (
+              <div className="mt-3 flex items-center justify-between">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                  Showing {filteredComplaints.length} of {complaints.length} complaints
+                </span>
+                <button
+                  onClick={() => setFilters({ status: "all", priority: "all", sortBy: "date-desc" })}
+                  className="text-sm text-fuchsia-600 dark:text-fuchsia-400 hover:underline"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Complaints List */}
         <div className="space-y-3">
@@ -188,11 +381,13 @@ export function ComplaintsPage({ userData }: ComplaintsPageProps) {
               return (
                 <div
                   key={complaint.id}
-                  onClick={() => setSelectedComplaint(complaint)}
-                  className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 hover:shadow-md transition cursor-pointer"
+                  className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 hover:shadow-md transition"
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
+                    <div 
+                      className="flex-1 cursor-pointer"
+                      onClick={() => setSelectedComplaint(complaint)}
+                    >
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">
                           {complaint.title}
@@ -223,6 +418,18 @@ export function ComplaintsPage({ userData }: ComplaintsPageProps) {
                         <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>
+                    
+                    {/* Download Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        downloadSingleComplaint(complaint);
+                      }}
+                      title="Download this complaint"
+                      className="h-8 w-8 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors flex-shrink-0"
+                    >
+                      <Download className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               );
