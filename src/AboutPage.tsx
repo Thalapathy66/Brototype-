@@ -37,7 +37,7 @@ export function AboutPage({ }: AboutPageProps) {
                   <img
                     src="https://i.ibb.co/CKRKyKL1/images.png"
                     alt="Brototype Logo"
-                    className="h-16 w-16 object-contain rounded-lg"
+                    className="h-16 w-16 object-contain rounded-full"
                   />
                   <div>
                     <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
