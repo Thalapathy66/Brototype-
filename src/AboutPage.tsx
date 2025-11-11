@@ -189,9 +189,10 @@ function BrototypeSectionContent() {
           ].map((course, index) => (
             <div
               key={index}
-              className="bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-700 p-4 rounded-lg border border-neutral-200 dark:border-neutral-600 hover:shadow-md transition"
+              className="relative bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-700 p-4 rounded-lg border border-neutral-200 dark:border-neutral-600 hover:shadow-md transition"
             >
-              <p className="text-neutral-800 dark:text-neutral-200 font-medium text-center">
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+              <p className="relative text-neutral-800 dark:text-neutral-200 font-medium text-center">
                 {course}
               </p>
             </div>
@@ -247,51 +248,57 @@ function BrototypeSectionContent() {
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">Our Locations</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
+          <div className="relative bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+            <h3 className="relative font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
               Kochi (Headquarters)
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="relative text-sm text-neutral-600 dark:text-neutral-400">
               Edathuruthikaran Holdings, 10/450-2, Kundanoor, Maradu, Ernakulam, Kerala 682304
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
+          <div className="relative bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+            <h3 className="relative font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
               Kozhikode
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="relative text-sm text-neutral-600 dark:text-neutral-400">
               Kinfra Techno Industrial Park, Calicut University PO, Kakkanchery, Kerala 673635
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
+          <div className="relative bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+            <h3 className="relative font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
               Trivandrum
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="relative text-sm text-neutral-600 dark:text-neutral-400">
               Dotspace Business Park, Kazhakkoottam, Thiruvananthapuram, Kerala 695585
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
+          <div className="relative bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+            <h3 className="relative font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
               Bengaluru
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="relative text-sm text-neutral-600 dark:text-neutral-400">
               Hustlehub Tech Park, Sector 2, HSR Layout, Bengaluru, Karnataka 560102
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
+          <div className="relative bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+            <h3 className="relative font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
               Coimbatore
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="relative text-sm text-neutral-600 dark:text-neutral-400">
               4th Floor, 35/4, Desabandhu St, Ramarkovk, Ram Nagar, Coimbatore, Tamil Nadu 641009
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
+          <div className="relative bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+            <h3 className="relative font-bold text-lg text-neutral-800 dark:text-neutral-200 mb-2">
               Chennai
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="relative text-sm text-neutral-600 dark:text-neutral-400">
               Canyon Coworking Space, A4, Chandrasekaran Avenue, 1st Main Rd, Thoraipakkam, Tamil Nadu 600097
             </p>
           </div>
