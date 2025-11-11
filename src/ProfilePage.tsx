@@ -4,11 +4,7 @@ import { Mail, Phone, Check, AlertCircle } from "lucide-react";
 import { auth } from "./firebase";
 import { 
   sendEmailVerification, 
-  reload,
-  RecaptchaVerifier,
-  PhoneAuthProvider,
-  updatePhoneNumber,
-  PhoneAuthCredential
+  reload
 } from "firebase/auth";
 
 interface ProfileProps {
@@ -24,7 +20,6 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
   const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
   const [showPhoneVerification, setShowPhoneVerification] = useState(false);
   const [verificationId, setVerificationId] = useState<string | null>(null);
-  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
     setFormData(userData);
@@ -147,107 +142,48 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
     }
   };
 
-  // Initialize reCAPTCHA on component mount
-  useEffect(() => {
-    if (!recaptchaVerifier && typeof window !== 'undefined') {
-      try {
-        const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          size: 'invisible',
-          callback: () => {
-            // reCAPTCHA solved, allow phone verification
-          }
-        });
-        setRecaptchaVerifier(verifier);
-      } catch (error) {
-        console.error("Error initializing reCAPTCHA:", error);
-      }
-    }
-  }, [recaptchaVerifier]);
-
-  // Phone Verification with Firebase
-  const sendPhoneVerification = async () => {
+  // Phone Verification - Demo Mode (No SMS charges)
+  // Note: Real Firebase Phone Auth requires Blaze plan ($0.01-0.06 per SMS after 10k free/month)
+  const sendPhoneVerification = () => {
     if (!formData.phone || formData.phone.trim() === "") {
       alert("Please enter a phone number first");
       return;
     }
 
-    if (!auth.currentUser) {
-      alert("You must be logged in to verify your phone number");
-      return;
-    }
-
-    // Validate phone format (must include country code, e.g., +1234567890)
-    if (!formData.phone.startsWith("+")) {
-      alert("Phone number must include country code (e.g., +1234567890 or +911234567890)");
-      return;
-    }
-
-    try {
-      if (!recaptchaVerifier) {
-        alert("reCAPTCHA not initialized. Please refresh the page.");
-        return;
-      }
-
-      const phoneProvider = new PhoneAuthProvider(auth);
-      const verificationIdResult = await phoneProvider.verifyPhoneNumber(
-        formData.phone,
-        recaptchaVerifier
-      );
-      
-      setVerificationId(verificationIdResult);
-      setShowPhoneVerification(true);
-      alert(`Verification code sent to ${formData.phone}!\n\nPlease enter the 6-digit code you received via SMS.`);
-    } catch (error: any) {
-      console.error("Error sending phone verification:", error);
-      if (error.code === "auth/invalid-phone-number") {
-        alert("Invalid phone number format. Please use format: +[country code][number]\nExample: +1234567890");
-      } else if (error.code === "auth/too-many-requests") {
-        alert("Too many requests. Please try again later.");
-      } else if (error.code === "auth/quota-exceeded") {
-        alert("SMS quota exceeded. This feature requires Firebase Blaze (pay-as-you-go) plan for production use.");
-      } else {
-        alert(`Error sending verification code: ${error.message}`);
-      }
-      
-      // Reset reCAPTCHA on error
-      if (recaptchaVerifier) {
-        recaptchaVerifier.clear();
-        setRecaptchaVerifier(null);
-      }
-    }
+    // Generate random 6-digit code for demo
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    setVerificationId(code); // Store code in verificationId for demo purposes
+    setShowPhoneVerification(true);
+    
+    alert(
+      `📱 DEMO MODE - Verification Code\n\n` +
+      `Code: ${code}\n\n` +
+      `In production with Firebase Blaze plan, this would be sent via SMS to ${formData.phone}\n\n` +
+      `For real SMS verification:\n` +
+      `1. Upgrade to Firebase Blaze plan (free for first 10k SMS/month)\n` +
+      `2. Enable Phone Auth in Firebase Console\n` +
+      `3. See PHONE_AUTH_GUIDE.md for details`
+    );
+    
+    console.log("Demo verification code:", code);
   };
 
-  const verifyPhone = async () => {
+  const verifyPhone = () => {
     if (!verificationId || !phoneVerificationCode) {
       alert("Please enter the verification code");
       return;
     }
 
-    if (!auth.currentUser) {
-      alert("You must be logged in to verify your phone number");
-      return;
-    }
-
-    try {
-      const credential = PhoneAuthProvider.credential(verificationId, phoneVerificationCode) as PhoneAuthCredential;
-      await updatePhoneNumber(auth.currentUser, credential);
-      
+    // Verify the demo code
+    if (phoneVerificationCode === verificationId) {
       setFormData((prev) => ({ ...prev, phoneVerified: true }));
       onUpdateProfile({ ...formData, phoneVerified: true });
       setShowPhoneVerification(false);
       setPhoneVerificationCode("");
       setVerificationId(null);
       alert("Phone verified successfully! ✓");
-    } catch (error: any) {
-      console.error("Error verifying phone:", error);
-      if (error.code === "auth/invalid-verification-code") {
-        alert("Invalid verification code. Please try again.");
-      } else if (error.code === "auth/code-expired") {
-        alert("Verification code expired. Please request a new code.");
-        setShowPhoneVerification(false);
-      } else {
-        alert(`Error verifying phone: ${error.message}`);
-      }
+    } else {
+      alert("Invalid verification code. Please try again.");
     }
   };
 
@@ -468,9 +404,6 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
             {isSaving ? "Saving..." : "Save Changes"}
           </button>
         </form>
-
-        {/* Hidden reCAPTCHA container for phone verification */}
-        <div id="recaptcha-container"></div>
       </div>
     </div>
   );
