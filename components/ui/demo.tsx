@@ -387,11 +387,11 @@ export default function AuthSwitch() {
               <h2 className="title">Sign in</h2>
               <div className="input-field">
                 <i>📧</i>
-                <input type="email" placeholder="Email" />
+                <input type="email" name="email" placeholder="Email" required />
               </div>
               <div className="input-field">
                 <i>🔒</i>
-                <input type="password" placeholder="Password" />
+                <input type="password" name="password" placeholder="Password" required />
               </div>
               <input type="submit" value="Login" className="btn solid" />
               <p className="social-text">Or sign in with social platforms</p>
@@ -406,15 +406,15 @@ export default function AuthSwitch() {
               <h2 className="title">Sign up</h2>
               <div className="input-field">
                 <i>👤</i>
-                <input type="text" placeholder="Username" />
+                <input type="text" name="username" placeholder="Username" required />
               </div>
               <div className="input-field">
                 <i>📧</i>
-                <input type="email" placeholder="Email" />
+                <input type="email" name="email" placeholder="Email" required />
               </div>
               <div className="input-field">
                 <i>🔒</i>
-                <input type="password" placeholder="Password" />
+                <input type="password" name="password" placeholder="Password" required />
               </div>
               <input type="submit" value="Sign up" className="btn" />
               <p className="social-text">Or sign up with social platforms</p>
