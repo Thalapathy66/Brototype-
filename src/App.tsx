@@ -32,9 +32,13 @@ function App() {
           // Admin login - clear any existing user data and set admin data
           const adminData: UserData = {
             name: "Admin",
+            email: ADMIN_CREDENTIALS.email,
             isAdmin: true,
+            emailVerified: true,
+            phoneVerified: true,
           };
           setUserData(adminData);
+          setCurrentUserEmail(email);
           localStorage.setItem("userData", JSON.stringify(adminData));
           setTimeout(() => {
             setIsLoggedIn(true);
@@ -113,10 +117,13 @@ function App() {
     if (userName.trim()) {
       const newUserData: UserData = {
         name: userName.trim(),
+        email: currentUserEmail,
         username: "",
         phone: "",
         bio: "",
         isAdmin: false,
+        emailVerified: false,
+        phoneVerified: false,
       };
       setUserData(newUserData);
       // Save to localStorage with user's email as key

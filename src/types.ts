@@ -14,10 +14,13 @@ export interface Complaint {
 
 export interface UserData {
   name: string;
+  email: string;
   username?: string;
   phone?: string;
   bio?: string;
   isAdmin?: boolean;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
 }
 
 export const ADMIN_CREDENTIALS = {

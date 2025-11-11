@@ -293,7 +293,7 @@ Generated from Brototalk Complaint Management System
           onSearch={setSearchQuery}
           onCreateClick={() => setIsCreateModalOpen(true)}
           onFilterClick={() => setFilterOpen(!filterOpen)}
-          onDownloadClick={downloadAllComplaints}
+          onDownloadClick={userData.isAdmin ? downloadAllComplaints : undefined}
           filterOpen={filterOpen}
         />
 
@@ -419,17 +419,19 @@ Generated from Brototalk Complaint Management System
                       </div>
                     </div>
                     
-                    {/* Download Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        downloadSingleComplaint(complaint);
-                      }}
-                      title="Download this complaint"
-                      className="h-8 w-8 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors flex-shrink-0"
-                    >
-                      <Download className="w-4 h-4" />
-                    </button>
+                    {/* Download Button - Only for admins */}
+                    {userData.isAdmin && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          downloadSingleComplaint(complaint);
+                        }}
+                        title="Download this complaint"
+                        className="h-8 w-8 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors flex-shrink-0"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               );

@@ -75,20 +75,22 @@ function Toolbar({
                 )} />
             </button>
 
-            {/* Download All Button */}
-            <button
-                onClick={onDownloadClick}
-                title="Download all complaints as Word document"
-                className="h-9 px-3 flex items-center gap-2
-                    bg-green-100 dark:bg-green-900/30
-                    text-green-700 dark:text-green-400
-                    rounded-lg
-                    hover:bg-green-200 dark:hover:bg-green-900/50
-                    transition-colors"
-            >
-                <Download className="w-4 h-4" />
-                <span className="hidden sm:inline text-sm">Export</span>
-            </button>
+            {/* Download All Button - Only for admins */}
+            {onDownloadClick && (
+                <button
+                    onClick={onDownloadClick}
+                    title="Download all complaints as Word document"
+                    className="h-9 px-3 flex items-center gap-2
+                        bg-green-100 dark:bg-green-900/30
+                        text-green-700 dark:text-green-400
+                        rounded-lg
+                        hover:bg-green-200 dark:hover:bg-green-900/50
+                        transition-colors"
+                >
+                    <Download className="w-4 h-4" />
+                    <span className="hidden sm:inline text-sm">Export</span>
+                </button>
+            )}
 
             {/* Primary Action */}
             <button

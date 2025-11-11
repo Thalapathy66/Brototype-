@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { LayoutDashboard, UserCog, LogOut, MessageSquareWarning } from "lucide-react";
+import { LayoutDashboard, UserCog, LogOut, MessageSquareWarning, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ProfilePage } from "@/src/ProfilePage";
 import { ComplaintsPage } from "@/src/ComplaintsPage";
+import { UsersPage } from "@/src/UsersPage";
 import { UserData } from "@/src/types";
 
 interface SidebarDemoProps {
@@ -16,9 +17,9 @@ interface SidebarDemoProps {
 
 export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemoProps) {
   const [open, setOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"dashboard" | "profile" | "complaints">("complaints");
+  const [currentPage, setCurrentPage] = useState<"dashboard" | "profile" | "complaints" | "users">("complaints");
 
-  const handleNavigation = (page: "dashboard" | "profile" | "complaints" | "logout") => {
+  const handleNavigation = (page: "dashboard" | "profile" | "complaints" | "users" | "logout") => {
     if (page === "logout") {
       onLogout();
     } else {
@@ -26,7 +27,8 @@ export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemo
     }
   };
 
-  const links = [
+  // Base links for all users
+  const baseLinks = [
     {
       label: "Complaints",
       href: "#",
@@ -43,6 +45,20 @@ export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemo
       ),
       onClick: () => handleNavigation("dashboard"),
     },
+  ];
+
+  // Admin-only link
+  const adminLink = userData.isAdmin ? [{
+    label: "Users",
+    href: "#",
+    icon: (
+      <Users className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+    onClick: () => handleNavigation("users"),
+  }] : [];
+
+  // Profile and logout links
+  const endLinks = [
     {
       label: "Profile",
       href: "#",
@@ -60,6 +76,10 @@ export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemo
       onClick: () => handleNavigation("logout"),
     },
   ];
+
+  // Combine all links
+  const links = [...baseLinks, ...adminLink, ...endLinks];
+
   return (
     <div
       className={cn(
@@ -102,6 +122,8 @@ export function SidebarDemo({ userData, onLogout, onUpdateProfile }: SidebarDemo
         />
       ) : currentPage === "complaints" ? (
         <ComplaintsPage userData={userData} />
+      ) : currentPage === "users" ? (
+        <UsersPage userData={userData} />
       ) : (
         <DashboardContent />
       )}
