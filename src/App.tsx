@@ -102,10 +102,24 @@ function App() {
             }, 500);
           } else {
             // SIGN IN with Firebase
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log("User signed in:", userCredential.user.email);
-            
-            // The onAuthStateChanged listener will handle the rest
+            try {
+              const userCredential = await signInWithEmailAndPassword(auth, email, password);
+              console.log("User signed in:", userCredential.user.email);
+              
+              // The onAuthStateChanged listener will handle the rest
+            } catch (signInError: any) {
+              // If admin credentials used but account doesn't exist, create it automatically
+              if (signInError.code === "auth/user-not-found" && 
+                  email === ADMIN_CREDENTIALS.email && 
+                  password === ADMIN_CREDENTIALS.password) {
+                console.log("Admin account not found. Creating admin account...");
+                const adminCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log("Admin account created:", adminCredential.user.email);
+                // The onAuthStateChanged listener will handle admin setup
+              } else {
+                throw signInError; // Re-throw other errors
+              }
+            }
           }
         } catch (error: any) {
           console.error("Authentication error:", error);
