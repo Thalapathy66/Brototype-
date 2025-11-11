@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import { UserData } from "./types";
 import { Mail, Phone, Check, AlertCircle } from "lucide-react";
 import { auth } from "./firebase";
-import { sendEmailVerification, reload } from "firebase/auth";
+import { 
+  sendEmailVerification, 
+  reload,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+  updatePhoneNumber,
+  PhoneAuthCredential
+} from "firebase/auth";
 
 interface ProfileProps {
   userData: UserData;
@@ -16,7 +23,8 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
   const [usernameError, setUsernameError] = useState("");
   const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
   const [showPhoneVerification, setShowPhoneVerification] = useState(false);
-  const [generatedPhoneCode, setGeneratedPhoneCode] = useState("");
+  const [verificationId, setVerificationId] = useState<string | null>(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
     setFormData(userData);
@@ -139,30 +147,107 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
     }
   };
 
-  // Phone Verification
-  const sendPhoneVerification = () => {
+  // Initialize reCAPTCHA on component mount
+  useEffect(() => {
+    if (!recaptchaVerifier && typeof window !== 'undefined') {
+      try {
+        const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+          size: 'invisible',
+          callback: () => {
+            // reCAPTCHA solved, allow phone verification
+          }
+        });
+        setRecaptchaVerifier(verifier);
+      } catch (error) {
+        console.error("Error initializing reCAPTCHA:", error);
+      }
+    }
+  }, [recaptchaVerifier]);
+
+  // Phone Verification with Firebase
+  const sendPhoneVerification = async () => {
     if (!formData.phone || formData.phone.trim() === "") {
       alert("Please enter a phone number first");
       return;
     }
 
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedPhoneCode(code);
-    setShowPhoneVerification(true);
-    // In a real app, send this via SMS/WhatsApp
-    console.log("Phone verification code:", code);
-    alert(`Verification code sent to ${formData.phone}!\n\n(For demo: Code is ${code})\n\nIn production, this would be sent via SMS/WhatsApp.`);
+    if (!auth.currentUser) {
+      alert("You must be logged in to verify your phone number");
+      return;
+    }
+
+    // Validate phone format (must include country code, e.g., +1234567890)
+    if (!formData.phone.startsWith("+")) {
+      alert("Phone number must include country code (e.g., +1234567890 or +911234567890)");
+      return;
+    }
+
+    try {
+      if (!recaptchaVerifier) {
+        alert("reCAPTCHA not initialized. Please refresh the page.");
+        return;
+      }
+
+      const phoneProvider = new PhoneAuthProvider(auth);
+      const verificationIdResult = await phoneProvider.verifyPhoneNumber(
+        formData.phone,
+        recaptchaVerifier
+      );
+      
+      setVerificationId(verificationIdResult);
+      setShowPhoneVerification(true);
+      alert(`Verification code sent to ${formData.phone}!\n\nPlease enter the 6-digit code you received via SMS.`);
+    } catch (error: any) {
+      console.error("Error sending phone verification:", error);
+      if (error.code === "auth/invalid-phone-number") {
+        alert("Invalid phone number format. Please use format: +[country code][number]\nExample: +1234567890");
+      } else if (error.code === "auth/too-many-requests") {
+        alert("Too many requests. Please try again later.");
+      } else if (error.code === "auth/quota-exceeded") {
+        alert("SMS quota exceeded. This feature requires Firebase Blaze (pay-as-you-go) plan for production use.");
+      } else {
+        alert(`Error sending verification code: ${error.message}`);
+      }
+      
+      // Reset reCAPTCHA on error
+      if (recaptchaVerifier) {
+        recaptchaVerifier.clear();
+        setRecaptchaVerifier(null);
+      }
+    }
   };
 
-  const verifyPhone = () => {
-    if (phoneVerificationCode === generatedPhoneCode) {
+  const verifyPhone = async () => {
+    if (!verificationId || !phoneVerificationCode) {
+      alert("Please enter the verification code");
+      return;
+    }
+
+    if (!auth.currentUser) {
+      alert("You must be logged in to verify your phone number");
+      return;
+    }
+
+    try {
+      const credential = PhoneAuthProvider.credential(verificationId, phoneVerificationCode) as PhoneAuthCredential;
+      await updatePhoneNumber(auth.currentUser, credential);
+      
       setFormData((prev) => ({ ...prev, phoneVerified: true }));
       onUpdateProfile({ ...formData, phoneVerified: true });
       setShowPhoneVerification(false);
       setPhoneVerificationCode("");
-      alert("Phone verified successfully!");
-    } else {
-      alert("Invalid verification code");
+      setVerificationId(null);
+      alert("Phone verified successfully! ✓");
+    } catch (error: any) {
+      console.error("Error verifying phone:", error);
+      if (error.code === "auth/invalid-verification-code") {
+        alert("Invalid verification code. Please try again.");
+      } else if (error.code === "auth/code-expired") {
+        alert("Verification code expired. Please request a new code.");
+        setShowPhoneVerification(false);
+      } else {
+        alert(`Error verifying phone: ${error.message}`);
+      }
     }
   };
 
@@ -301,7 +386,7 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
                 value={formData.phone || ""}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 className="flex-1 px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
-                placeholder="+1 (555) 123-4567"
+                placeholder="+1234567890 (include country code)"
               />
               {formData.phoneVerified ? (
                 <span className="flex items-center gap-1 px-3 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg text-sm">
@@ -314,10 +399,13 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
                   disabled={!formData.phone}
                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Verify
+                  Send SMS Code
                 </button>
               )}
             </div>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+              Must include country code (e.g., +1 for US, +91 for India)
+            </p>
           </div>
 
           {/* Phone Verification Modal */}
@@ -380,6 +468,9 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
             {isSaving ? "Saving..." : "Save Changes"}
           </button>
         </form>
+
+        {/* Hidden reCAPTCHA container for phone verification */}
+        <div id="recaptcha-container"></div>
       </div>
     </div>
   );
