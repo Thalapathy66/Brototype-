@@ -1,31 +1,27 @@
 // Firebase configuration and initialization
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
-// Option 1: Use environment variables (recommended for production)
-// Create a .env file based on .env.example and add your Firebase config
-// Option 2: Hardcode your config below (easier for quick setup)
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "YOUR_API_KEY",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "YOUR_PROJECT_ID",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "YOUR_MESSAGING_SENDER_ID",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "YOUR_APP_ID"
+  apiKey: "AIzaSyAArqbUU2BQz2GLI1Pj-1Z9ntUNzwDESFs",
+  authDomain: "brototype-73965.firebaseapp.com",
+  projectId: "brototype-73965",
+  storageBucket: "brototype-73965.firebasestorage.app",
+  messagingSenderId: "913109044837",
+  appId: "1:913109044837:web:9757ba488bdcb86d29808c",
+  measurementId: "G-W0ZER70FJ9"
 };
-
-// Validate configuration
-if (firebaseConfig.apiKey === "YOUR_API_KEY") {
-  console.warn(
-    "⚠️ Firebase is not configured! Please update src/firebase.ts or create a .env file.\n" +
-    "See FIREBASE_SETUP.md for detailed instructions."
-  );
-}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+// Initialize Firebase Analytics
+const analytics = getAnalytics(app);
+
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
+export { analytics };
 export default app;
