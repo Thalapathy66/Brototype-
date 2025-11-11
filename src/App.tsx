@@ -8,24 +8,9 @@ function App() {
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [currentUserEmail, setCurrentUserEmail] = useState<string>("");
 
-  // Load user data from localStorage on mount
-  useEffect(() => {
-    const savedUserData = localStorage.getItem("userData");
-    if (savedUserData) {
-      try {
-        const parsed = JSON.parse(savedUserData);
-        // Only load if it's not a new session
-        if (!isLoggedIn) {
-          setUserData(parsed);
-        }
-      } catch (error) {
-        console.error("Error loading user data:", error);
-      }
-    }
-  }, []);
-
-  // Simulate login after form submission
+  // Handle authentication after form submission
   useEffect(() => {
     const handleFormSubmit = (e: Event) => {
       const target = e.target as HTMLFormElement;
@@ -33,10 +18,14 @@ function App() {
       if (target.tagName === "FORM" && !showNamePrompt && !isLoggedIn) {
         e.preventDefault();
         
-        // Get email and password from form
+        // Get form data
         const formData = new FormData(target);
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
+        const username = formData.get("username") as string; // Only present in sign-up form
+        
+        // Determine if this is sign-up or sign-in
+        const isSignUp = !!username;
         
         // Check if admin login
         if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
@@ -53,36 +42,64 @@ function App() {
           return;
         }
         
-        // Regular user login
-        const savedUserData = localStorage.getItem("userData");
-        if (savedUserData) {
-          try {
-            const parsed = JSON.parse(savedUserData);
-            // Check if saved data is admin data - if so, clear it for regular user
-            if (parsed.isAdmin) {
-              localStorage.removeItem("userData");
-              // New regular user, show name prompt
-              setTimeout(() => {
-                setShowNamePrompt(true);
-              }, 500);
-            } else {
-              // Regular user already has data, log them in directly
+        // Get registered users from localStorage
+        const registeredUsersJSON = localStorage.getItem("registeredUsers");
+        const registeredUsers: Array<{email: string; password: string; name: string}> = 
+          registeredUsersJSON ? JSON.parse(registeredUsersJSON) : [];
+        
+        if (isSignUp) {
+          // SIGN UP - Register new user
+          const existingUser = registeredUsers.find(u => u.email === email);
+          if (existingUser) {
+            alert("This email is already registered. Please sign in instead.");
+            return;
+          }
+          
+          // Register the new user
+          registeredUsers.push({ email, password, name: username });
+          localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+          
+          // Show name prompt for additional details
+          setCurrentUserEmail(email);
+          setUserName(username);
+          setTimeout(() => {
+            setShowNamePrompt(true);
+          }, 500);
+        } else {
+          // SIGN IN - Validate credentials
+          const user = registeredUsers.find(u => u.email === email && u.password === password);
+          
+          if (!user) {
+            alert("Invalid email or password. Please sign up if you don't have an account.");
+            return;
+          }
+          
+          // Check if user has profile data
+          const savedUserData = localStorage.getItem(`userData_${email}`);
+          setCurrentUserEmail(email);
+          
+          if (savedUserData) {
+            try {
+              const parsed = JSON.parse(savedUserData);
               setUserData(parsed);
               setTimeout(() => {
                 setIsLoggedIn(true);
               }, 500);
+            } catch (error) {
+              console.error("Error loading user data:", error);
+              // Show name prompt if data is corrupted
+              setUserName(user.name);
+              setTimeout(() => {
+                setShowNamePrompt(true);
+              }, 500);
             }
-          } catch (error) {
-            // Error parsing, treat as new user
+          } else {
+            // First time login after signup - show name prompt
+            setUserName(user.name);
             setTimeout(() => {
               setShowNamePrompt(true);
             }, 500);
           }
-        } else {
-          // New user, show name prompt
-          setTimeout(() => {
-            setShowNamePrompt(true);
-          }, 500);
         }
       }
     };
@@ -102,8 +119,10 @@ function App() {
         isAdmin: false,
       };
       setUserData(newUserData);
-      // Save to localStorage
-      localStorage.setItem("userData", JSON.stringify(newUserData));
+      // Save to localStorage with user's email as key
+      if (currentUserEmail) {
+        localStorage.setItem(`userData_${currentUserEmail}`, JSON.stringify(newUserData));
+      }
       setIsLoggedIn(true);
       setShowNamePrompt(false);
     }
@@ -123,7 +142,11 @@ function App() {
   const handleUpdateProfile = (updatedData: UserData) => {
     setUserData(updatedData);
     // Update localStorage when profile is updated
-    localStorage.setItem("userData", JSON.stringify(updatedData));
+    if (currentUserEmail) {
+      localStorage.setItem(`userData_${currentUserEmail}`, JSON.stringify(updatedData));
+    } else if (updatedData.isAdmin) {
+      localStorage.setItem("userData", JSON.stringify(updatedData));
+    }
   };
 
   if (showNamePrompt) {
