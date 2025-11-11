@@ -113,70 +113,60 @@ function BrototypeSectionContent() {
   return (
     <>
       {/* Mission Section */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
-          <div className="flex items-center gap-3 mb-4">
-            <Target className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-            <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">Our Mission</h2>
-          </div>
-          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg">
-            To help motivated individuals from any background build a high-paying career in software engineering. 
-            We believe that if you know how to read and write in English and have basic math knowledge, 
-            you too can become a software engineer.
-          </p>
+        <div className="relative flex items-center gap-3 mb-4">
+          <Target className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">Our Mission</h2>
         </div>
+        <p className="relative text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg">
+          To help motivated individuals from any background build a high-paying career in software engineering. 
+          We believe that if you know how to read and write in English and have basic math knowledge, 
+          you too can become a software engineer.
+        </p>
       </div>
 
       {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="relative p-px rounded-[1.25rem]">
+        <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800 text-center">
           <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-          <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800 text-center">
-            <Users className="w-10 h-10 text-green-600 dark:text-green-400 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-green-900 dark:text-green-100 mb-2">2200+</div>
-            <p className="text-green-700 dark:text-green-300 font-medium">Students Placed</p>
-            <p className="text-sm text-green-600 dark:text-green-400 mt-1">In the last 6 years</p>
-          </div>
+          <Users className="relative w-10 h-10 text-green-600 dark:text-green-400 mx-auto mb-3" />
+          <div className="relative text-4xl font-bold text-green-900 dark:text-green-100 mb-2">2200+</div>
+          <p className="relative text-green-700 dark:text-green-300 font-medium">Students Placed</p>
+          <p className="relative text-sm text-green-600 dark:text-green-400 mt-1">In the last 6 years</p>
         </div>
 
-        <div className="relative p-px rounded-[1.25rem]">
+        <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800 text-center">
           <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-          <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800 text-center">
-            <Award className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-blue-900 dark:text-blue-100 mb-2">₹39,000</div>
-            <p className="text-blue-700 dark:text-blue-300 font-medium">Average Salary</p>
-            <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">Per month</p>
-          </div>
+          <Award className="relative w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
+          <div className="relative text-4xl font-bold text-blue-900 dark:text-blue-100 mb-2">₹39,000</div>
+          <p className="relative text-blue-700 dark:text-blue-300 font-medium">Average Salary</p>
+          <p className="relative text-sm text-blue-600 dark:text-blue-400 mt-1">Per month</p>
         </div>
 
-        <div className="relative p-px rounded-[1.25rem]">
+        <div className="relative bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800 text-center">
           <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-          <div className="relative bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800 text-center">
-            <Heart className="w-10 h-10 text-orange-600 dark:text-orange-400 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-orange-900 dark:text-orange-100 mb-2">71%</div>
-            <p className="text-orange-700 dark:text-orange-300 font-medium">Non-IT Background</p>
-            <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">Successfully placed</p>
-          </div>
+          <Heart className="relative w-10 h-10 text-orange-600 dark:text-orange-400 mx-auto mb-3" />
+          <div className="relative text-4xl font-bold text-orange-900 dark:text-orange-100 mb-2">71%</div>
+          <p className="relative text-orange-700 dark:text-orange-300 font-medium">Non-IT Background</p>
+          <p className="relative text-sm text-orange-600 dark:text-orange-400 mt-1">Successfully placed</p>
         </div>
       </div>
 
       {/* About Brocamp */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
-            About Brocamp
-          </h2>
-          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed mb-4">
-            Brocamp is a 12-month intensive training program, offered both in-house and online, 
-            for motivated individuals who are ready to work hard and build a high-paying career in software engineering.
-          </p>
-          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
-            Our study materials worth more than ₹5 Lakhs are 100% FREE of cost, and we provide 
-            24x7 doubt clearance support with our Exclusive Membership program.
-          </p>
-        </div>
+        <h2 className="relative text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
+          About Brocamp
+        </h2>
+        <p className="relative text-neutral-700 dark:text-neutral-300 leading-relaxed mb-4">
+          Brocamp is a 12-month intensive training program, offered both in-house and online, 
+          for motivated individuals who are ready to work hard and build a high-paying career in software engineering.
+        </p>
+        <p className="relative text-neutral-700 dark:text-neutral-300 leading-relaxed">
+          Our study materials worth more than ₹5 Lakhs are 100% FREE of cost, and we provide 
+          24x7 doubt clearance support with our Exclusive Membership program.
+        </p>
       </div>
 
       {/* Courses Offered */}
@@ -210,16 +200,15 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Certifications */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-8 rounded-2xl border border-yellow-200 dark:border-yellow-800">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-8 rounded-2xl border border-yellow-200 dark:border-yellow-800">
-          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4 text-center">
-            Official Partnerships
-          </h2>
-          <p className="text-center text-neutral-700 dark:text-neutral-300 mb-6">
-            Brototype (Packapeer Academy Private Limited) is officially partnered with:
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <h2 className="relative text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4 text-center">
+          Official Partnerships
+        </h2>
+        <p className="relative text-center text-neutral-700 dark:text-neutral-300 mb-6">
+          Brototype (Packapeer Academy Private Limited) is officially partnered with:
+        </p>
+        <div className="relative grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg flex items-center justify-center">
               <img
                 src="https://website-main.blr1.cdn.digitaloceanspaces.com/assets/NCVET_r1wu73.png"
@@ -249,7 +238,6 @@ function BrototypeSectionContent() {
               />
             </div>
           </div>
-        </div>
       </div>
 
       {/* Locations */}
@@ -311,13 +299,12 @@ function BrototypeSectionContent() {
       </div>
 
       {/* Contact Information */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
-          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
-            Contact Information
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <h2 className="relative text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
+          Contact Information
+        </h2>
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
@@ -359,14 +346,12 @@ function BrototypeSectionContent() {
               </div>
             </div>
           </div>
-        </div>
       </div>
 
       {/* Founder Section */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
-          <div className="flex flex-col md:flex-row items-center gap-6">
+        <div className="relative flex flex-col md:flex-row items-center gap-6">
             <img
               src="https://www.brototype.com/images/nikhil.webp"
               alt="Nikhil Kilivayil"
@@ -391,7 +376,6 @@ function BrototypeSectionContent() {
               </p>
             </div>
           </div>
-        </div>
       </div>
 
       {/* Footer Note */}
@@ -409,10 +393,9 @@ function BrototalkSectionContent() {
   return (
     <>
       {/* About Brototalk */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-8 rounded-2xl border border-blue-200 dark:border-blue-800">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="relative flex items-center gap-3 mb-4">
             <MessageSquareWarning className="w-10 h-10 text-blue-600 dark:text-blue-400" />
             <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">What is Brototalk?</h2>
           </div>
@@ -425,7 +408,6 @@ function BrototalkSectionContent() {
             This platform ensures that every voice is heard and every complaint is properly documented and 
             addressed by the appropriate authorities.
           </p>
-        </div>
       </div>
 
       {/* Features */}
@@ -501,13 +483,12 @@ function BrototalkSectionContent() {
       </div>
 
       {/* Complaint Categories */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-8 rounded-2xl border border-purple-200 dark:border-purple-800">
-          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
-            Complaint Categories
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <h2 className="relative text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
+          Complaint Categories
+        </h2>
+        <div className="relative grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               "Technical Issues",
               "Course Content",
@@ -528,7 +509,6 @@ function BrototalkSectionContent() {
               </div>
             ))}
           </div>
-        </div>
       </div>
 
       {/* Priority Levels */}
@@ -559,13 +539,12 @@ function BrototalkSectionContent() {
       </div>
 
       {/* How It Works */}
-      <div className="relative p-px rounded-[1.5rem]">
+      <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-        <div className="relative bg-white dark:bg-neutral-800 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
-            How It Works
-          </h2>
-          <div className="space-y-4">
+        <h2 className="relative text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-6 text-center">
+          How It Works
+        </h2>
+        <div className="relative space-y-4">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
                 1
@@ -611,7 +590,6 @@ function BrototalkSectionContent() {
               </div>
             </div>
           </div>
-        </div>
       </div>
 
       {/* Footer Note */}
