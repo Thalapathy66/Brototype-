@@ -4,6 +4,7 @@ import { CreateComplaintModal } from "./CreateComplaintModal";
 import { ComplaintDetailsModal } from "./ComplaintDetailsModal";
 import { Complaint, STATUS_CONFIG, UserData } from "./types";
 import { AlertCircle, CheckCircle, Clock, TrendingUp, Download } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface ComplaintsPageProps {
   userData: UserData;
@@ -225,16 +226,21 @@ Generated from Brototalk Complaint Management System
   return (
     <div className="flex flex-1">
       <div className="p-4 md:p-8 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-6 flex-1 w-full h-full overflow-y-auto">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
-            {userData.isAdmin ? "Complaints Management" : "My Complaints"}
-          </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">
-            {userData.isAdmin
-              ? "Manage and resolve student complaints"
-              : "Track and manage your submitted complaints"}
-          </p>
+        {/* Header with Theme Toggle */}
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+              {userData.isAdmin ? "Complaints Management" : "My Complaints"}
+            </h1>
+            <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+              {userData.isAdmin
+                ? "Manage and resolve student complaints"
+                : "Track and manage your submitted complaints"}
+            </p>
+          </div>
+          <div className="flex-shrink-0">
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Stats Cards */}

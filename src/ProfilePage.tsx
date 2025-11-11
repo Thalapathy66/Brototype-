@@ -6,6 +6,7 @@ import {
   sendEmailVerification, 
   reload
 } from "firebase/auth";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface ProfileProps {
   userData: UserData;
@@ -191,12 +192,15 @@ export function ProfilePage({ userData, onUpdateProfile, onBack }: ProfileProps)
       <div className="p-4 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-6 flex-1 w-full h-full overflow-y-auto">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">Profile Settings</h1>
-          <button
-            onClick={onBack}
-            className="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
-          >
-            Back to Dashboard
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onBack}
+              className="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+            >
+              Back to Dashboard
+            </button>
+            <ThemeToggle />
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">

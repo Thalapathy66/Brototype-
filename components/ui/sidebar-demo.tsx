@@ -168,14 +168,19 @@ export const LogoIcon = () => {
   );
 };
 
-// Dashboard home content
+// Dashboard home content - Import ThemeToggle
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+
 const DashboardContent = () => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="mb-4">
-          <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">Dashboard</h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">Welcome back! Here's your overview.</p>
+        <div className="mb-4 flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">Dashboard</h1>
+            <p className="text-neutral-600 dark:text-neutral-400 mt-2">Welcome back! Here's your overview.</p>
+          </div>
+          <ThemeToggle />
         </div>
         <div className="flex gap-2">
           {[...new Array(4)].map((_, i) => (

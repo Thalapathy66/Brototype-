@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { UserData } from "./types";
 import { Download, Users, Check, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface UsersPageProps {
   userData: UserData;
@@ -127,9 +128,9 @@ Generated from Brototalk Complaint Management System
   return (
     <div className="flex flex-1">
       <div className="p-4 md:p-8 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-6 flex-1 w-full h-full overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
+        {/* Header with Theme Toggle */}
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
             <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
               Registered Users
             </h1>
@@ -137,21 +138,24 @@ Generated from Brototalk Complaint Management System
               View and export all registered users
             </p>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={downloadUsersTXT}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              <span>Export TXT</span>
-            </button>
-            <button
-              onClick={downloadUsersCSV}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              <span>Export CSV</span>
-            </button>
+          <div className="flex items-center gap-3">
+            <div className="flex gap-2">
+              <button
+                onClick={downloadUsersTXT}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                <span>Export TXT</span>
+              </button>
+              <button
+                onClick={downloadUsersCSV}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                <span>Export CSV</span>
+              </button>
+            </div>
+            <ThemeToggle />
           </div>
         </div>
 
