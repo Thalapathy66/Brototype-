@@ -2,7 +2,6 @@ import { useState } from "react";
 import { UserData } from "./types";
 import { Users, Award, Target, Heart, MapPin, Mail, Phone, MessageSquareWarning, CheckCircle, Clock, Shield } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 interface AboutPageProps {
   userData: UserData;
@@ -28,68 +27,48 @@ export function AboutPage({ }: AboutPageProps) {
             <div className="flex justify-center gap-4 max-w-2xl mx-auto">
               <button
                 onClick={() => setSelectedSection("brototype")}
-                className="flex-1 relative"
-              >
-                <div className={`relative p-6 rounded-[1.25rem] border-[0.75px] transition-all ${
+                className={`flex-1 p-6 rounded-xl border-2 transition-all ${
                   selectedSection === "brototype"
                     ? "border-purple-500 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/30 dark:to-blue-900/30 shadow-lg"
                     : "border-neutral-300 dark:border-neutral-600 hover:border-purple-400 dark:hover:border-purple-500"
-                }`}>
-                  <GlowingEffect
-                    spread={40}
-                    glow={true}
-                    disabled={false}
-                    proximity={64}
-                    inactiveZone={0.01}
-                    borderWidth={2}
+                }`}
+              >
+                <div className="flex flex-col items-center gap-3">
+                  <img
+                    src="https://i.ibb.co/CKRKyKL1/images.png"
+                    alt="Brototype Logo"
+                    className="h-16 w-16 object-contain rounded-full"
                   />
-                  <div className="flex flex-col items-center gap-3 relative z-10">
-                    <img
-                      src="https://i.ibb.co/CKRKyKL1/images.png"
-                      alt="Brototype Logo"
-                      className="h-16 w-16 object-contain rounded-full"
-                    />
-                    <div>
-                      <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-                        Brototype
-                      </h3>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                        Training Institute
-                      </p>
-                    </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+                      Brototype
+                    </h3>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                      Training Institute
+                    </p>
                   </div>
                 </div>
               </button>
 
               <button
                 onClick={() => setSelectedSection("brototalk")}
-                className="flex-1 relative"
-              >
-                <div className={`relative p-6 rounded-[1.25rem] border-[0.75px] transition-all ${
+                className={`flex-1 p-6 rounded-xl border-2 transition-all ${
                   selectedSection === "brototalk"
                     ? "border-blue-500 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 shadow-lg"
                     : "border-neutral-300 dark:border-neutral-600 hover:border-blue-400 dark:hover:border-blue-500"
-                }`}>
-                  <GlowingEffect
-                    spread={40}
-                    glow={true}
-                    disabled={false}
-                    proximity={64}
-                    inactiveZone={0.01}
-                    borderWidth={2}
-                  />
-                  <div className="flex flex-col items-center gap-3 relative z-10">
-                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                      <MessageSquareWarning className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-                        Brototalk
-                      </h3>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                        Complaint System
-                      </p>
-                    </div>
+                }`}
+              >
+                <div className="flex flex-col items-center gap-3">
+                  <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                    <MessageSquareWarning className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+                      Brototalk
+                    </h3>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                      Complaint System
+                    </p>
                   </div>
                 </div>
               </button>
